@@ -264,11 +264,13 @@ class GtpConnection:
 
     def gogui_rules_legal_moves_cmd(self, args):
         """ Implement this function for Assignment 1 """
-        legal_moves = []
-        # def is_legal(self, point, color):
-        for i in self.board.get_empty_points():
-            if self.board.is_legal(i, self.board.current_player):
-                legal_moves.append(i.upper())
+        opp_color = GoBoardUtil.opponent(self.board.current_player)
+        for point in self.board.get_empty_points():
+            in_enemy_eye = self._is_surrounded(point, opp_color)
+            # self.board[point] = color
+            single_captures = []
+            neighbors = self._neighbors(point)
+            
         legal_moves.sort()
         self.respond(legal_moves)
         return legal_moves
@@ -283,7 +285,7 @@ class GtpConnection:
             color = color_to_int(board_color)
             if args[1].lower() == "pass":
                 self.error(
-                    f"illegal move: {board_move} wrong coordinate" 
+                    f"illegal move: \"{board_color} {board_move}\" wrong coordinate"
                 )
                 return
             coord = move_to_coord(args[1], self.board.size)
