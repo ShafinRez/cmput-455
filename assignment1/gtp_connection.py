@@ -20,6 +20,7 @@ from board_util import (
 )
 import numpy as np
 import re
+import timeit
 
 
 class GtpConnection:
@@ -52,6 +53,13 @@ class GtpConnection:
             "play": self.play_cmd,
             "gogui-rules_legal_moves": self.gogui_rules_legal_moves_cmd,
             "gogui-rules_final_result": self.gogui_rules_final_result_cmd,
+            "gogui-analyze_cmd": self.gogui_analyze_cmd,
+            'gogui-rules_game_id_cmd':self.gogui_rules_game_id_cmd,
+            'gogui-rules_board_size_cmd':self.gogui_rules_board_size_cmd,
+            'gogui-rules_side_to_move_cmd': self.gogui_rules_side_to_move_cmd,
+            'gogui-rules_board_cmd': self.gogui_rules_board_cmd,
+            'cputime':self.cputime,
+    
         }
 
         # used for argument checking
@@ -325,6 +333,9 @@ class GtpConnection:
         else:
             self.respond("resign")
 
+    def cputime(self, args):
+        self.respond(timeit.default_timer())
+        
 
     """
     ==========================================================================
@@ -391,4 +402,3 @@ def color_to_int(c):
     """convert character to the appropriate integer code"""
     color_to_int = {"b": BLACK, "w": WHITE, "e": EMPTY, "BORDER": BORDER}
     return color_to_int[c]
-
