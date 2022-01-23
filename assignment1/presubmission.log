@@ -1,0 +1,12 @@
+Script started on 2022-01-22 23:09:01-07:00 [TERM="xterm-256color" TTY="/dev/tty1" COLUMNS="93" LINES="8"]
+]0;srezwan@LAPTOP-2ILKHSD6: /mnt/c/Users/Shafin/Desktop/cmput-455/assignment1[01;32msrezwan@LAPTOP-2ILKHSD6[00m:[01;34m/mnt/c/Users/Shafin/Desktop/cmput-455/assignment1[00m$ 
+]0;srezwan@LAPTOP-2ILKHSD6: /mnt/c/Users/Shafin/Desktop/cmput-455/assignment1[01;32msrezwan@LAPTOP-2ILKHSD6[00m:[01;34m/mnt/c/Users/Shafin/Desktop/cmput-455/assignment1[00m$ script -a-help a[K
+Script started, file is typescript
+]0;srezwan@LAPTOP-2ILKHSD6: /mnt/c/Users/Shafin/Desktop/cmput-455/assignment1[01;32msrezwan@LAPTOP-2ILKHSD6[00m:[01;34m/mnt/c/Users/Shafin/Desktop/cmput-455/assignment1[00m$ pyth[K[K[K[Kgit[K[K[Kgogui-regress'[K /[K'[K"pyt hon Go0.py" p
+presubmission.log               public-tests-nogo.gtp.html
+public-tests-nogo.gtp           public-tests-nogo.gtp.out.html
+]0;srezwan@LAPTOP-2ILKHSD6: /mnt/c/Users/Shafin/Desktop/cmput-455/assignment1[01;32msrezwan@LAPTOP-2ILKHSD6[00m:[01;34m/mnt/c/Users/Shafin/Desktop/cmput-455/assignment1[00m$ gogui-regress "python Go0.py" public-tests-nogo.gtp
+gogui-regress: command not found
+]0;srezwan@LAPTOP-2ILKHSD6: /mnt/c/Users/Shafin/Desktop/cmput-455/assignment1[01;32msrezwan@LAPTOP-2ILKHSD6[00m:[01;34m/mnt/c/Users/Shafin/Desktop/cmput-455/assignment1[00m$ gogui-regress "python Go0.py" public-tests-nogo.gtp
+gogui-regress: command not found
+]0;srezwan@LAPTOP-2ILKHSD6: /mnt/c/Users/Shafin/Desktop/cmput-455
