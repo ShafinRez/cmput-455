@@ -34,6 +34,7 @@ class GtpConnection:
         board: 
             Represents the current board state.
         """
+        self.timelimit = 1
         self._debug_mode = debug_mode
         self.go_engine = go_engine
         self.board = board
@@ -52,7 +53,8 @@ class GtpConnection:
             "play": self.play_cmd,
             "gogui-rules_legal_moves":self.gogui_rules_legal_moves_cmd,
             "gogui-rules_final_result":self.gogui_rules_final_result_cmd,
-            "solve":self.solve_cmd
+            "solve":self.solve_cmd,
+            "timelimit":self.timelimit_cmd,
         }
 
         # used for argument checking
@@ -65,6 +67,7 @@ class GtpConnection:
             "genmove": (1, "Usage: genmove {w,b}"),
             "play": (2, "Usage: play {b,w} MOVE"),
             "legal_moves": (1, "Usage: legal_moves {w,b}"),
+            "timelimit":(1, "Usage: timelimit INT where 1 <= INT <= 100")
         }
 
     def write(self, data):
@@ -277,9 +280,9 @@ class GtpConnection:
             self.respond('unknown')
         else:
             if self.board.current_player == BLACK:
-                self.respond('')
+                self.respond('white')
             else:
-                self.respond('')
+                self.respond('black')
 
     def play_cmd(self, args):
         """
@@ -333,6 +336,15 @@ class GtpConnection:
     def solve_cmd(self, args):
         # remove this respond and implement this method
         self.respond('Implement This for Assignment 2')
+        
+        self.response("[winner] [move]")
+
+    def timelimit_cmd(self, args):
+        timelimit = int(args[0])
+        assert 1 <= timelimit <= 100
+        self.timelimit = timelimit
+        self.response()
+
     """
     ==========================================================================
     Assignment 2 - game-specific commands end here
