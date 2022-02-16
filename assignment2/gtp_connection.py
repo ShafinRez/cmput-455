@@ -6,6 +6,7 @@ Parts of this code were originally based on the gtp module
 in the Deep-Go project by Isaac Henrion and Amos Storkey 
 at the University of Edinburgh.
 """
+from asyncio.windows_events import NULL
 import traceback
 from sys import stdin, stdout, stderr
 from board_util import (
@@ -321,6 +322,10 @@ class GtpConnection:
         # change this method to use your solver
         board_color = args[0].lower()
         color = color_to_int(board_color)
+        if board_color == 'b':
+            self.board.current_player = BLACK
+        elif board_color == 'w':
+             self.board.current_player = WHITE
         move = self.go_engine.get_move(self.board, color)
         if move is None:
             self.respond('unknown')
@@ -334,7 +339,9 @@ class GtpConnection:
             self.respond("Illegal move: {}".format(move_as_string))
 
     def solve_cmd(self, args):
-        # remove this respond and implement this method
+        start = time.process_time()
+        if self.board.current_player == BLACK:
+            win = self.minimaxBooleanOR()
         self.respond('Implement This for Assignment 2')
         
         self.response("[winner] [move]")
@@ -344,6 +351,63 @@ class GtpConnection:
         assert 1 <= timelimit <= 100
         self.timelimit = timelimit
         self.response()
+    
+    def minimaxBooleanOR(self, gameState):
+        currentPlayer = gameState.current_player
+        colour = False
+        if currentPlayer != BLACK:
+            result = True
+
+        result = self.tt.lookup(gameState.code())
+
+        if result != None:
+            return result
+        
+        legal_moves = self.getLegalMoves(gameState)
+        total = len(legal_moves)
+
+        if self.isTerminal(total):
+            self.tt.store(gameState.code(), colour)
+            return colour
+        
+        for i in legal_moves:
+            gameState.play_move(i, currentPlayer)
+            if self.minimaxBooleanAND(gameState)[0]:
+                self.tt.store(gameState.code(),True)
+                return True
+        self.tt.store(gameState.code(),False)
+        return False
+
+    def minimaxBooleanAND(self, gameState):
+        current_player = gameState.current_player
+        result = self.tt.lookup(gameState.code())
+
+        colour = False
+        if current_player != BLACK:
+            result = True
+
+        result = self.tt.lookup(gameState.code())
+
+        if result != None:
+            return result
+        
+        legal_moves = self.getLegalMoves(gameState)
+        total = len(legal_moves)
+
+        if self.isTerminal(total):
+            self.tt.store(gameState.code(), colour)
+            return colour
+        
+        for i in legal_moves:
+            gameState.play_move(i, current_player)
+            gameState.undo_move(i)
+            if not self.minimaxBooleanOR(gameState)[0]:
+                self.tt.store(gameState.code(),False)
+                return False
+        self.tt.store(gameState.code(),True)
+        return True
+
+    
 
     """
     ==========================================================================

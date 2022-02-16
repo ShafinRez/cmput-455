@@ -1,0 +1,71 @@
+<html>
+<head>
+<title>Output: a2-sample.gtp</title>
+<meta http-equiv="Content-Type" content="text/html; charset=Cp1252">
+<meta name="generator" content="gogui-regress 1.5.1 (http://gogui.sf.net)">
+<style type="text/css">
+<!--
+body { margin:0; }
+span.comment { color:#999999; }
+span.fail { font-weight:bold; color:#ff5454; }
+span.error { font-weight:bold; color:#ffa954; }
+span.stderr { color:#666666; }
+span.invalid { background:#ff5454;}
+span.pass { font-weight:bold; color:#5eaf5e; }
+span.test { font-weight:bold; }
+-->
+</style>
+</head>
+<body bgcolor="white" text="black" link="#0000ee" vlink="#551a8b">
+<table border="0" width="100%" bgcolor="#91aee8" border="0">
+<tr><td>
+<h1>Output: a2-sample.gtp</h1>
+</td></tr>
+</table>
+<table width="100%" bgcolor="#e0e0e0">
+<tr><th align="left">Date:</th><td>February 16, 2022 12:27:13 PM MST</td></tr>
+<tr><th align="left">Host:</th><td>LAPTOP-2ILKHSD6</td></tr>
+<tr><th align="left" valign="top">Command:</th>
+<td valign="top"><tt>python Go0.py</tt></td></tr>
+</table>
+<pre style="margin:1em">
+name
+= Go0
+
+version
+= 1.0
+
+cputime
+? Unknown command
+
+</pre>
+<hr style="margin:1em" size="1">
+<pre style="margin:1em">
+<span class="command">boardsize 2
+</span>= 
+
+<span class="command">clear_board
+</span>= 
+
+
+<span class="test"><a name="10">10 solve
+</a>#? [b a1|b a2|b b1|b b2]
+</span><span class="fail">= Implement This for Assignment 2
+
+</span><span class="stderr">Traceback (most recent call last):
+  File "C:\Users\Shafin\Desktop\455\cmput-455\assignment2\Go0.py", line 42, in &lt;module&gt;
+    run()
+  File "C:\Users\Shafin\Desktop\455\cmput-455\assignment2\Go0.py", line 38, in run
+    con.start_connection()
+  File "C:\Users\Shafin\Desktop\455\cmput-455\assignment2\gtp_connection.py", line 87, in start_connection
+    self.get_cmd(line)
+  File "C:\Users\Shafin\Desktop\455\cmput-455\assignment2\gtp_connection.py", line 115, in get_cmd
+</span><span class="comment"># All four moves win so all these are correct answers
+</span>
+<span class="stderr">    raise e
+  File "C:\Users\Shafin\Desktop\455\cmput-455\assignment2\gtp_connection.py", line 111, in get_cmd
+</span><span class="command">play b a1
+</span><span class="stderr">    self.commands[command_name](args)
+  File "C:\Users\Shafin\Desktop\455\cmput-455\assignment2\gtp_connection.py", line 346, in solve_cmd
+    self.response("[winner] [move]")
+AttributeError: 'GtpConnection' object has no attribute 'response'. Did you mean: 'respond'?
