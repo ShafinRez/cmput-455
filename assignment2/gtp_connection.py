@@ -6,9 +6,12 @@ Parts of this code were originally based on the gtp module
 in the Deep-Go project by Isaac Henrion and Amos Storkey 
 at the University of Edinburgh.
 """
-from asyncio.windows_events import NULL
+import re
+import time
 import traceback
 from sys import stdin, stdout, stderr
+from TranspositionTable import TranspositionTable
+
 from board_util import (
     GoBoardUtil,
     BLACK,
@@ -19,8 +22,6 @@ from board_util import (
     MAXSIZE,
     coord_to_point,
 )
-import numpy as np
-import re
 
 
 class GtpConnection:
@@ -38,6 +39,7 @@ class GtpConnection:
         self.timelimit = 1
         self._debug_mode = debug_mode
         self.go_engine = go_engine
+        self.tt = TranspositionTable()
         self.board = board
         self.commands = {
             "protocol_version": self.protocol_version_cmd,
@@ -52,10 +54,10 @@ class GtpConnection:
             "genmove": self.genmove_cmd,
             "list_commands": self.list_commands_cmd,
             "play": self.play_cmd,
-            "gogui-rules_legal_moves":self.gogui_rules_legal_moves_cmd,
-            "gogui-rules_final_result":self.gogui_rules_final_result_cmd,
-            "solve":self.solve_cmd,
-            "timelimit":self.timelimit_cmd,
+            "gogui-rules_legal_moves": self.gogui_rules_legal_moves_cmd,
+            "gogui-rules_final_result": self.gogui_rules_final_result_cmd,
+            "solve": self.solve_cmd,
+            "timelimit": self.timelimit_cmd,
         }
 
         # used for argument checking
@@ -68,7 +70,7 @@ class GtpConnection:
             "genmove": (1, "Usage: genmove {w,b}"),
             "play": (2, "Usage: play {b,w} MOVE"),
             "legal_moves": (1, "Usage: legal_moves {w,b}"),
-            "timelimit":(1, "Usage: timelimit INT where 1 <= INT <= 100")
+            "timelimit": (1, "Usage: timelimit INT where 1 <= INT <= 100")
         }
 
     def write(self, data):
@@ -215,6 +217,7 @@ class GtpConnection:
     Assignment 2 - commands we already implemented for you
     ==========================================================================
     """
+
     def gogui_analyze_cmd(self, args):
         """ We already implemented this function for Assignment 2 """
         self.respond("pstring/Legal Moves For ToPlay/gogui-rules_legal_moves\n"
@@ -242,10 +245,10 @@ class GtpConnection:
         """ We already implemented this function for Assignment 2 """
         size = self.board.size
         str = ''
-        for row in range(size-1, -1, -1):
+        for row in range(size - 1, -1, -1):
             start = self.board.row_start(row + 1)
             for i in range(size):
-                #str += '.'
+                # str += '.'
                 point = self.board.board[start + i]
                 if point == BLACK:
                     str += 'X'
@@ -263,17 +266,17 @@ class GtpConnection:
         legal_moves = GoBoardUtil.generate_legal_moves(self.board, self.board.current_player)
         coords = [point_to_coord(move, self.board.size) for move in legal_moves]
         # convert to point strings
-        point_strs  = [ chr(ord('a') + col - 1) + str(row) for row, col in coords]
+        point_strs = [chr(ord('a') + col - 1) + str(row) for row, col in coords]
         point_strs.sort()
         point_strs = ' '.join(point_strs).upper()
         self.respond(point_strs)
-
 
     """
     ==========================================================================
     Assignment 2 - game-specific commands you have to implement or modify
     ==========================================================================
     """
+
     def gogui_rules_final_result_cmd(self, args):
         # implement this method correctly
         legal_moves = GoBoardUtil.generate_legal_moves(self.board, self.board.current_player)
@@ -291,7 +294,7 @@ class GtpConnection:
         """
         # change this method to use your solver
         try:
-            board_color = args[0].lower()    
+            board_color = args[0].lower()
             board_move = args[1]
             color = color_to_int(board_color)
             if args[1].lower() == "pass":
@@ -322,60 +325,99 @@ class GtpConnection:
         # change this method to use your solver
         board_color = args[0].lower()
         color = color_to_int(board_color)
+        legal_moves = GoBoardUtil.generate_legal_moves(self.board, color)
         if board_color == 'b':
             self.board.current_player = BLACK
         elif board_color == 'w':
-             self.board.current_player = WHITE
+            self.board.current_player = WHITE
         move = self.go_engine.get_move(self.board, color)
         if move is None:
             self.respond('unknown')
             return
-        move_coord = point_to_coord(move, self.board.size)
-        move_as_string = format_point(move_coord)
-        if self.board.is_legal(move, color):
-            self.board.play_move(move, color)
-            self.respond(move_as_string)
         else:
-            self.respond("Illegal move: {}".format(move_as_string))
+            winner_info = None
+            time_start = time.process_time()
+
+            if self.board.current_player == BLACK:
+                winner_info = self.minimaxBooleanOR(self.board)
+            else:
+                winner_info = self.minimaxBooleanAND(self.board)
+
+            total_time = time.process_time() - time_start
+
+            if total_time >= self.timelimit:
+                random_move = GoBoardUtil.generate_random_move
+                self.board.play_move(random_move, self.board.current_player)
+                return
+            winner_colour = "b" if winner_info[0] else "w"
+            winner_move = winner_info[1]
+            if winner_colour == "b" and self.board.current_player == BLACK:
+                self.board.play_move(winner_move, self.board.current_player)
+            elif winner_colour == "b" and self.board.current_player == WHITE:
+                self.board.play_move(GoBoardUtil.generate_random_move, self.board.current_player)
+            elif winner_colour == "w" and self.board.current_player == BLACK:
+                self.board.play_move(GoBoardUtil.generate_random_move, self.board.current_player)
+            elif winner_colour == "w" and self.board.current_player == WHITE:
+                self.board.play_move(winner_move, self.board.current_player)
 
     def solve_cmd(self, args):
         start = time.process_time()
         if self.board.current_player == BLACK:
-            win = self.minimaxBooleanOR()
-        self.respond('Implement This for Assignment 2')
-        
-        self.response("[winner] [move]")
+            winner = self.minimaxBooleanOR(self.board)
+        else:
+            winner = self.minimaxBooleanAND(self.board)
+        total_time = time.process_time() - start
+
+        if total_time >= self.timelimit:
+            self.respond("unknown")
+            return
+
+        winner_colour = "b" if winner[0] else "w"
+        winner_move = winner[1]
+
+        if winner_colour == "b" and self.board.current_player == BLACK:
+            self.respond(f"{winner_colour} {winner_move}")
+        elif winner_colour == "b" and self.board.current_player == WHITE:
+            self.respond(f"{winner_colour}")
+        elif winner_colour == "w" and self.board.current_player == BLACK:
+            self.respond(f"{winner_colour}")
+        elif winner_colour == "w" and self.board.current_player == WHITE:
+            self.respond(f"{winner_colour} {winner_move}")
+
 
     def timelimit_cmd(self, args):
         timelimit = int(args[0])
         assert 1 <= timelimit <= 100
         self.timelimit = timelimit
-        self.response()
-    
+        self.respond("")
+
     def minimaxBooleanOR(self, gameState):
         currentPlayer = gameState.current_player
         colour = False
         if currentPlayer != BLACK:
             result = True
+        print("_" * 80)
+        print(gameState)
+        print("_" * 80)
 
         result = self.tt.lookup(gameState.code())
 
         if result != None:
             return result
-        
-        legal_moves = self.getLegalMoves(gameState)
+
+        legal_moves = self.GoBoardUtils(gameState)
         total = len(legal_moves)
 
         if self.isTerminal(total):
             self.tt.store(gameState.code(), colour)
             return colour
-        
+
         for i in legal_moves:
             gameState.play_move(i, currentPlayer)
             if self.minimaxBooleanAND(gameState)[0]:
-                self.tt.store(gameState.code(),True)
+                self.tt.store(gameState.code(), True)
                 return True
-        self.tt.store(gameState.code(),False)
+        self.tt.store(gameState.code(), False)
         return False
 
     def minimaxBooleanAND(self, gameState):
@@ -390,30 +432,31 @@ class GtpConnection:
 
         if result != None:
             return result
-        
-        legal_moves = self.getLegalMoves(gameState)
+
+        # legal_moves = self.getLegalMoves(gameState)
+        legal_moves = GoBoardUtil.generate_legal_moves(self.board, gameState.current_player)
         total = len(legal_moves)
 
+        # if not more moves?
         if self.isTerminal(total):
             self.tt.store(gameState.code(), colour)
             return colour
-        
+
         for i in legal_moves:
             gameState.play_move(i, current_player)
             gameState.undo_move(i)
             if not self.minimaxBooleanOR(gameState)[0]:
-                self.tt.store(gameState.code(),False)
+                self.tt.store(gameState.code(), False)
                 return False
-        self.tt.store(gameState.code(),True)
+        self.tt.store(gameState.code(), True)
         return True
-
-    
 
     """
     ==========================================================================
     Assignment 2 - game-specific commands end here
     ==========================================================================
     """
+
 
 def point_to_coord(point, boardsize):
     """

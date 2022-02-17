@@ -251,4 +251,7 @@ class GoBoard(object):
             board_moves.append(self.last_move)
         if self.last2_move != None and self.last2_move != PASS:
             board_moves.append(self.last2_move)
-            return 
+            return
+
+    def code(self):
+        return hash(tuple(self.board))
