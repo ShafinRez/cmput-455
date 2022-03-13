@@ -5,6 +5,7 @@
 from gtp_connection import GtpConnection
 from board_util import EMPTY, GoBoardUtil, BLACK, WHITE
 from board import GoBoard
+import random
 
 
 class Go0:
@@ -46,11 +47,20 @@ class Go0:
         currentPlayer = state.current_player
         state.current_player = WHITE + BLACK - currentPlayer
 
-
     def Randomgenmove(self, state):
         assert not state.endOfGame()
         moves = state.get_empty_points()
-        #randomize moves
+        random_moves = random.choice(moves)
+        for i in random_moves:
+            legal = state.is_legal(i, state.current_player)
+            if legal:
+                return i
+        return None
+
+
+    def genmove(self, state):
+        assert not state.endOfGame()
+        moves = state.get_empty_points()
         numMoves = len(moves)
         score = [0] * numMoves
         for i in range(numMoves):
