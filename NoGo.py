@@ -57,6 +57,13 @@ class Go0:
                 return i
         return None
 
+    def weightsFile(self, file):
+        weights = {}
+        weights_file =  open(file, 'r')
+        for line in weights_file:
+            weight = line.split(' ')
+            weights[int(weight[0])] = float(weight[1])
+        return weights
 
     def genmove(self, state):
         assert not state.endOfGame()
