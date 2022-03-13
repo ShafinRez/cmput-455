@@ -3,7 +3,7 @@
 # Set the path to your python3 above
 
 from gtp_connection import GtpConnection
-from board_util import GoBoardUtil
+from board_util import GoBoardUtil, BLACK, WHITE
 from board import GoBoard
 
 
@@ -21,11 +21,24 @@ class Go0:
         """
         self.name = "Go0"
         self.version = 1.0
+        self.num_sim = 10
+
+    def randomSimulation(self, state, move, player):
+        tempState = state.copy()
+        while True:
+            currentPlayer = tempState.current_player
+            randomMove = state.generate_random_move(state, player)
+            if move == None:
+                return BLACK + WHITE - currentPlayer
+            tempState.play_move(move, currentPlayer)
 
     def get_move(self, board, color):
         return GoBoardUtil.generate_random_move(board, color, 
                                                 use_eye_filter=False)
 
+    def simulate(self, state, move, toplay):
+        if self.policy == 'random':
+            return self.randomSimulation(state, move, toplay)
 
 def run():
     """

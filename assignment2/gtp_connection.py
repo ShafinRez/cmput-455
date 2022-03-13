@@ -437,7 +437,7 @@ class GtpConnection:
         legal_moves = GoBoardUtil.generate_legal_moves(self.board, gameState.current_player)
         total = len(legal_moves)
 
-        # if not more moves?
+        # TODO if not more moves?
         if self.isTerminal(total):
             self.tt.store(gameState.code(), colour)
             return colour
