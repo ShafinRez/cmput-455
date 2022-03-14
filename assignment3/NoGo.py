@@ -9,6 +9,8 @@ from simulation_util import writeMoves, select_best_move
 from ucb import runUcb
 from board_score import winner
 from pattern_util import PatternUtil
+from sys import stdin, stdout, stderr
+from board_util import coord_to_point
 
 
 class Go0:
@@ -58,7 +60,7 @@ class Go0:
         emptyPoints = board.get_empty_points()
         moves = []
         for p in emptyPoints:
-            if cboard.is_legal(p, color):
+            if board.is_legal(p, color):
                 moves.append(p)
         if not moves:
             return None
@@ -72,7 +74,7 @@ class Go0:
             for move in moves:
                 wins = self.simulateMove(cboard, move, color)
                 moveWins.append(wins)
-            writeMoves(cboard, moves, moveWins, self.num_sim)
+            # writeMoves(cboard, moves, moveWins, self.num_sim)
             return select_best_move(board, moves, moveWins)
 
     def playGame(self, board, color):
@@ -82,14 +84,14 @@ class Go0:
         nuPasses = 0
         for _ in range(self.limit):
             color = board.current_player
-            if self.random_simulation:
-                move = GoBoardUtil.generate_random_move(board, color, True)
+            if self.policy == "random":
+                move = GoBoardUtil.generate_random_move(board, color, False)
             else:
                 # move = PatternUtil.generate_move_with_filter(
                 #     board, self.use_pattern, check_selfatari
                 # )
-                move = PatternUtil.generate_move_with_filter(
-                    board, self.use_pattern
+                move = PatternUtil.generate_move_without_filter(
+                    board, self.selection
                 )
             board.play_move(move, color)
             if move == PASS:
@@ -100,15 +102,15 @@ class Go0:
                 break
         return winner(board)
 
-    def randomSimulation(self, state, move, player):
-        tempState = state.copy()
-        tempState.play_move(move, player)
-        while True:
-            currentPlayer = tempState.current_player
-            randomMove = state.generate_random_move(state, player)
-            if randomMove == None:
-                return BLACK + WHITE - currentPlayer
-            tempState.play_move(move, currentPlayer)
+    # def randomSimulation(self, state, move, player):
+    #     tempState = state.copy()
+    #     tempState.play_move(move, player)
+    #     while True:
+    #         currentPlayer = tempState.current_player
+    #         randomMove = GoBoardUtil.generate_random_move(state, player, False)
+    #         if randomMove == None:
+    #             return BLACK + WHITE - currentPlayer
+    #         tempState.play_move(move, currentPlayer)
 
     def getLegalMoves(self, state, colour):
         emptyPos = state.get_empty_points()
@@ -118,9 +120,9 @@ class Go0:
                 moves.append(pos)
         return moves 
 
-    def simulate(self, state, move, toplay):
-        if self.policy == 'random':
-            return self.randomSimulation(state, move, toplay)
+    # def simulate(self, state, move, toplay):
+    #     if self.policy == 'random':
+    #         return self.randomSimulation(state, move, toplay)
 
 def run():
     """

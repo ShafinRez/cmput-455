@@ -7,7 +7,9 @@ Utility functions shared by simulation-based players Go3 and Go4
 
 from gtp_connection import point_to_coord, format_point
 import numpy as np
+from sys import stdout
 import sys
+import random
 
 def byPercentage(pair):
     return pair[1]
@@ -35,5 +37,11 @@ def select_best_move(board, moves, moveWins):
     """
     Move select after the search.
     """
+    # if len(set(moveWins)) == 1:
+        # stdout.write("= {}\n\n".format(moveWins))
+        # stdout.flush()
+        # return np.random.choice(moves)
+    stdout.write("= {}\n\n".format(moveWins))
+    stdout.flush()
     max_child = np.argmax(moveWins)
     return moves[max_child]

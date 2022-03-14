@@ -6,7 +6,7 @@ Implements functions to:
 """
 
 import numpy as np
-from board_util import where1d, BORDER, BLACK, WHITE
+from board_util import where1d, BORDER, BLACK, WHITE, GoBoardUtil
 
 def score_board(board):
     """ Score board from Black's point of view """
@@ -40,10 +40,17 @@ def score_board(board):
     return score
 
 def winner(board):
-    score = score_board(board)
-    if score > 0:
-        return BLACK
-    elif score < 0:
-        return WHITE
+    current_player = board.current_player
+    legal_moves = GoBoardUtil.generate_legal_moves(board, current_player)
+    if legal_moves == None:
+        opp = GoBoardUtil.opponent(current_player)
+        return opp
     else:
         return None
+    # score = score_board(board)
+    # if score > 0:
+    #     return BLACK
+    # elif score < 0:
+    #     return WHITE
+    # else:
+    #     return None

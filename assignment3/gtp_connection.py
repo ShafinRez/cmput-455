@@ -83,8 +83,44 @@ class GtpConnection:
                 probability = str(1 / remainingMoves) + " "
                 strLegalMoves = [(format_point(point_to_coord(move, self.board.size))).lower() for move in legalMoves]
                 self.respond(f"{' '.join(sorted(strLegalMoves))} {probability * remainingMoves}")
+        
         else:
-            self.respond("error fix")
+            total = 0
+            moves_probability = {}
+            probability = []
+            for move in legalMoves:
+                move_value = self.moveWeight(move)
+                weights = self.getWeights('weights')
+                val_move = weights[move_value]
+                x,y = format_point(point_to_coord(move, self.board.size)).lower()
+                strLegalMoves = [].append(x,y)
+                moves_probability[x,y] = val_move
+                total += val_move
+            strLegalMoves = sorted(strLegalMoves)
+            for i in strLegalMoves:
+                probability.append(round(moves_probability[i]/total,3)) 
+            self.respond(f"{' '.join(sorted(strLegalMoves))} {probability}")
+
+    def getWeights(self, file):
+        weights = {}
+        weights_file = open( file +'.txt','r')
+        for line in weights_file:
+            key_value = line.split(' ')
+            weights[int(key_value)] = float(key_value)
+        weights_file.close()
+        return weights
+
+    def moveWeight(self,move):
+        neighbours = [move + self.NS - 1, move + self.NS,move + self.NS + 1,move - 1,move + 1,  move - self.NS - 1,move - self.NS,move - self.NS + 1]
+        total = 0
+        for i in range(len(neighbours)):
+            if self.board.get_color(neighbours[i]) == BLACK:
+                total += BLACK * (4 ** i)
+            elif self.board.get_color(neighbours[i]) == WHITE:
+                total += WHITE * (4 ** i)
+            elif self.board.get_color(neighbours[i]) == BORDER:
+                total += BORDER * (4 ** i)
+        return total
 
     def policy_cmd(self, args):
         self.go_engine.policy = args[0]

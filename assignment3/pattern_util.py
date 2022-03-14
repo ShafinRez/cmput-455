@@ -43,7 +43,7 @@ class PatternUtil(object):
                 pattern += " "
         return pattern
 
-    def last_moves_empty_neighbors(board):
+    def last_moves_empty_neighbors(self, board):
         """
         Get the neighbors of last_move and second last move.
 
@@ -60,14 +60,13 @@ class PatternUtil(object):
             ]
         return nb_list
 
-    @staticmethod
-    def generate_pattern_moves(board):
+    def generate_pattern_moves(self, board):
         """
         Generate a list of moves that match pattern.
         This only checks moves that are neighbors of the moves in the last two steps.
         See last_moves_empty_neighbors() in board for detail.
         """
-        pattern_checking_set = last_moves_empty_neighbors(board)
+        pattern_checking_set = self.last_moves_empty_neighbors(board)
         moves = []
         for p in pattern_checking_set:
             if PatternUtil.neighborhood_33(board, p) in pat3set:
@@ -161,6 +160,22 @@ class PatternUtil(object):
         if use_pattern:
             moves = PatternUtil.generate_pattern_moves(board)
             move = PatternUtil.filter_moves_and_generate(board, moves, check_selfatari)
+        if move == None:
+            move = GoBoardUtil.generate_random_move(board, board.current_player, True)
+        return move
+
+    @staticmethod
+    def generate_move_without_filter(board, use_pattern):
+        """
+        Arguments
+        ---------
+        Note that even if True, this filter only applies to pattern moves
+        use_pattern: Use pattern policy?
+        """
+        move = None
+        if use_pattern:
+            moves = PatternUtil.generate_pattern_moves(board)
+            move = PatternUtil.filter_moves_and_generate(board, moves)
         if move == None:
             move = GoBoardUtil.generate_random_move(board, board.current_player, True)
         return move

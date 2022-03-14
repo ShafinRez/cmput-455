@@ -23,7 +23,7 @@ span.test { font-weight:bold; }
 </td></tr>
 </table>
 <table width="100%" bgcolor="#e0e0e0">
-<tr><th align="left">Date:</th><td>March 13, 2022 10:47:01 PM MDT</td></tr>
+<tr><th align="left">Date:</th><td>March 14, 2022 5:53:24 PM MDT</td></tr>
 <tr><th align="left">Host:</th><td>DESKTOP-C74IC56</td></tr>
 <tr><th align="left" valign="top">Command:</th>
 <td valign="top"><tt>python NoGo.py</tt></td></tr>
@@ -189,57 +189,19 @@ cputime
 </span>= 
 
 <span class="test"><a name="20">20 policy_moves
-</a>#? [d1 d6 f3 f7 0.417 0.102 0.218 0.264]
-</span><span class="fail">= error fix
-
-</span>
-<span class="comment"># Test to see genmove works with rr selection
-</span><span class="command">play w f3
-</span>= 
-
-<span class="command">play b c5
-</span>= 
-
-<span class="command">play w d1
-</span>= 
-
-<span class="command">play b d2
-</span>= 
-
-<span class="comment">#   A B C D E F G
-# 7 X O X O O . O 7
-# 6 . O X . O X O 6
-# 5 O X X O X . X 5
-# 4 X O X O O O O 4
-# 3 X . X X O O O 3
-# 2 X X X X X O . 2
-# 1 X X X O O O X 1
-#   A B C D E F G
-# White to play
-</span>
-<span class="command">policy random
-</span>= 
-
-<span class="test"><a name="30">30 genmove w
 </a></span><span class="stderr">Traceback (most recent call last):
-  File "F:\Code\GitHub\cmput-455\assignment3\NoGo.py", line 135, in &lt;module&gt;
+  File "F:\Code\GitHub\cmput-455\assignment3\NoGo.py", line 137, in &lt;module&gt;
     run()
-  File "F:\Code\GitHub\cmput-455\assignment3\NoGo.py", line 131, in run
+  File "F:\Code\GitHub\cmput-455\assignment3\NoGo.py", line 133, in run
     con.start_connection()
-  File "F:\Code\GitHub\cmput-455\assignment3\gtp_connection.py", line 111, in start_connection
+  File "F:\Code\GitHub\cmput-455\assignment3\gtp_connection.py", line 147, in start_connection
     self.get_cmd(line)
-  File "F:\Code\GitHub\cmput-455\assignment3\gtp_connection.py", line 139, in get_cmd
+  File "F:\Code\GitHub\cmput-455\assignment3\gtp_connection.py", line 175, in get_cmd
     raise e
-  File "F:\Code\GitHub\cmput-455\assignment3\gtp_connection.py", line 135, in get_cmd
+  File "F:\Code\GitHub\cmput-455\assignment3\gtp_connection.py", line 171, in get_cmd
     self.commands[command_name](args)
-  File "F:\Code\GitHub\cmput-455\assignment3\gtp_connection.py", line 328, in genmove_cmd
-    move = self.go_engine.get_move(self.board, color)
-  File "F:\Code\GitHub\cmput-455\assignment3\NoGo.py", line 73, in get_move
-    wins = self.simulateMove(cboard, move, color)
-  File "F:\Code\GitHub\cmput-455\assignment3\NoGo.py", line 48, in simulateMove
-    result = self.simulate(board, move, toplay)
-  File "F:\Code\GitHub\cmput-455\assignment3\NoGo.py", line 123, in simulate
-    return self.randomSimulation(state, move, toplay)
-  File "F:\Code\GitHub\cmput-455\assignment3\NoGo.py", line 108, in randomSimulation
-    randomMove = state.generate_random_move(state, player)
-AttributeError: 'GoBoard' object has no attribute 'generate_random_move'
+  File "F:\Code\GitHub\cmput-455\assignment3\gtp_connection.py", line 92, in policy_moves_cmd
+    move_value = self.moveWeight(move)
+  File "F:\Code\GitHub\cmput-455\assignment3\gtp_connection.py", line 114, in moveWeight
+    neighbours = [move + self.NS - 1, move + self.NS,move + self.NS + 1,move - 1,move + 1,  move - self.NS - 1,move - self.NS,move - self.NS + 1]
+AttributeError: 'GtpConnection' object has no attribute 'NS'
