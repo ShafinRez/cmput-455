@@ -228,6 +228,13 @@ class GoBoard(object):
                 nbc.append(nb)
         return nbc
 
+    def find_neighbor_of_color(self, point, color):
+        """ Return one neighbor of point of given color, or None """
+        for nb in self._neighbors(point):
+            if self.get_color(nb) == color:
+                return nb
+        return None
+
     def _neighbors(self, point):
         """ List of all four neighbors of the point """
         return [point - 1, point + 1, point - self.NS, point + self.NS]

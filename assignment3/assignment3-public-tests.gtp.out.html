@@ -1,0 +1,245 @@
+<html>
+<head>
+<title>Output: assignment3-public-tests.gtp</title>
+<meta http-equiv="Content-Type" content="text/html; charset=Cp1252">
+<meta name="generator" content="gogui-regress 1.5.1 (http://gogui.sf.net)">
+<style type="text/css">
+<!--
+body { margin:0; }
+span.comment { color:#999999; }
+span.fail { font-weight:bold; color:#ff5454; }
+span.error { font-weight:bold; color:#ffa954; }
+span.stderr { color:#666666; }
+span.invalid { background:#ff5454;}
+span.pass { font-weight:bold; color:#5eaf5e; }
+span.test { font-weight:bold; }
+-->
+</style>
+</head>
+<body bgcolor="white" text="black" link="#0000ee" vlink="#551a8b">
+<table border="0" width="100%" bgcolor="#91aee8" border="0">
+<tr><td>
+<h1>Output: assignment3-public-tests.gtp</h1>
+</td></tr>
+</table>
+<table width="100%" bgcolor="#e0e0e0">
+<tr><th align="left">Date:</th><td>March 13, 2022 10:47:01 PM MDT</td></tr>
+<tr><th align="left">Host:</th><td>DESKTOP-C74IC56</td></tr>
+<tr><th align="left" valign="top">Command:</th>
+<td valign="top"><tt>python NoGo.py</tt></td></tr>
+</table>
+<pre style="margin:1em">
+name
+= Go0
+
+version
+= 1.0
+
+cputime
+? Unknown command
+
+</pre>
+<hr style="margin:1em" size="1">
+<pre style="margin:1em">
+<span class="comment"># Public tests
+</span>
+<span class="command">clear_board
+</span>= 
+
+<span class="command">boardsize 7
+</span>= 
+
+<span class="command">play b c6
+</span>= 
+
+<span class="command">play w d5
+</span>= 
+
+<span class="command">play b a7
+</span>= 
+
+<span class="command">play w g7
+</span>= 
+
+<span class="command">play b a2
+</span>= 
+
+<span class="command">play w e4
+</span>= 
+
+<span class="command">play b a3
+</span>= 
+
+<span class="command">play w f1
+</span>= 
+
+<span class="command">play b c3
+</span>= 
+
+<span class="command">play w d7
+</span>= 
+
+<span class="command">play b d3
+</span>= 
+
+<span class="command">play w g4
+</span>= 
+
+<span class="command">play b c4
+</span>= 
+
+<span class="command">play w b7
+</span>= 
+
+<span class="command">play b c2
+</span>= 
+
+<span class="command">play w f2
+</span>= 
+
+<span class="command">play b g5
+</span>= 
+
+<span class="command">play w b6
+</span>= 
+
+<span class="command">play b e2
+</span>= 
+
+<span class="command">play w b4
+</span>= 
+
+<span class="command">play b b2
+</span>= 
+
+<span class="command">play w a5
+</span>= 
+
+<span class="command">play b b5
+</span>= 
+
+<span class="command">play w g3
+</span>= 
+
+<span class="command">play b g1
+</span>= 
+
+<span class="command">play w e7
+</span>= 
+
+<span class="command">play b a4
+</span>= 
+
+<span class="command">play w d4
+</span>= 
+
+<span class="command">play b b1
+</span>= 
+
+<span class="command">play w f4
+</span>= 
+
+<span class="command">play b a1
+</span>= 
+
+<span class="command">play w e3
+</span>= 
+
+<span class="command">play b c1
+</span>= 
+
+<span class="command">play w e6
+</span>= 
+
+<span class="command">play b f6
+</span>= 
+
+<span class="command">play w e1
+</span>= 
+
+<span class="command">play b e5
+</span>= 
+
+<span class="command">play w g6
+</span>= 
+
+<span class="command">play b c7
+</span>= 
+
+<span class="comment">#   A B C D E F G
+# 7 X O X O O . O 7
+# 6 . O X . O X O 6
+# 5 O X . O X . X 5
+# 4 X O X O O O O 4
+# 3 X . X X O . O 3
+# 2 X X X . X O . 2
+# 1 X X X . O O X 1
+#   A B C D E F G
+# White to play
+</span>
+<span class="command">policy random
+</span>= 
+
+<span class="test"><a name="10">10 policy_moves
+</a>#? [d1 d6 f3 f7 0.25 0.25 0.25 0.25]
+= d1 d6 f3 f7 0.25 0.25 0.25 0.25 
+
+</span>
+<span class="command">policy pattern
+</span>= 
+
+<span class="test"><a name="20">20 policy_moves
+</a>#? [d1 d6 f3 f7 0.417 0.102 0.218 0.264]
+</span><span class="fail">= error fix
+
+</span>
+<span class="comment"># Test to see genmove works with rr selection
+</span><span class="command">play w f3
+</span>= 
+
+<span class="command">play b c5
+</span>= 
+
+<span class="command">play w d1
+</span>= 
+
+<span class="command">play b d2
+</span>= 
+
+<span class="comment">#   A B C D E F G
+# 7 X O X O O . O 7
+# 6 . O X . O X O 6
+# 5 O X X O X . X 5
+# 4 X O X O O O O 4
+# 3 X . X X O O O 3
+# 2 X X X X X O . 2
+# 1 X X X O O O X 1
+#   A B C D E F G
+# White to play
+</span>
+<span class="command">policy random
+</span>= 
+
+<span class="test"><a name="30">30 genmove w
+</a></span><span class="stderr">Traceback (most recent call last):
+  File "F:\Code\GitHub\cmput-455\assignment3\NoGo.py", line 135, in &lt;module&gt;
+    run()
+  File "F:\Code\GitHub\cmput-455\assignment3\NoGo.py", line 131, in run
+    con.start_connection()
+  File "F:\Code\GitHub\cmput-455\assignment3\gtp_connection.py", line 111, in start_connection
+    self.get_cmd(line)
+  File "F:\Code\GitHub\cmput-455\assignment3\gtp_connection.py", line 139, in get_cmd
+    raise e
+  File "F:\Code\GitHub\cmput-455\assignment3\gtp_connection.py", line 135, in get_cmd
+    self.commands[command_name](args)
+  File "F:\Code\GitHub\cmput-455\assignment3\gtp_connection.py", line 328, in genmove_cmd
+    move = self.go_engine.get_move(self.board, color)
+  File "F:\Code\GitHub\cmput-455\assignment3\NoGo.py", line 73, in get_move
+    wins = self.simulateMove(cboard, move, color)
+  File "F:\Code\GitHub\cmput-455\assignment3\NoGo.py", line 48, in simulateMove
+    result = self.simulate(board, move, toplay)
+  File "F:\Code\GitHub\cmput-455\assignment3\NoGo.py", line 123, in simulate
+    return self.randomSimulation(state, move, toplay)
+  File "F:\Code\GitHub\cmput-455\assignment3\NoGo.py", line 108, in randomSimulation
+    randomMove = state.generate_random_move(state, player)
+AttributeError: 'GoBoard' object has no attribute 'generate_random_move'

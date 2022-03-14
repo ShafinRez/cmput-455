@@ -52,7 +52,10 @@ class GtpConnection:
             "play": self.play_cmd,
             "gogui-rules_legal_moves":self.gogui_rules_legal_moves_cmd,
             "gogui-rules_final_result":self.gogui_rules_final_result_cmd,
-            "solve":self.solve_cmd
+            "solve":self.solve_cmd,
+            "policy": self.policy_cmd,
+            "selection": self.selection_cmd,
+            "policy_moves": self.policy_moves_cmd,
         }
 
         # used for argument checking
@@ -65,7 +68,32 @@ class GtpConnection:
             "genmove": (1, "Usage: genmove {w,b}"),
             "play": (2, "Usage: play {b,w} MOVE"),
             "legal_moves": (1, "Usage: legal_moves {w,b}"),
+            "policy": (1, "Usage: policy {random, pattern}"),
+            "selection": (1, "Usage: selection {rr, ucb}"),
         }
+
+    def policy_moves_cmd(self, args):
+        currentPlayer = self.board.current_player
+        legalMoves = self.go_engine.getLegalMoves(self.board, currentPlayer)
+        if self.go_engine.policy == "random":
+            remainingMoves = len(legalMoves)
+            if remainingMoves == 0:
+                self.response()
+            else: 
+                probability = str(1 / remainingMoves) + " "
+                strLegalMoves = [(format_point(point_to_coord(move, self.board.size))).lower() for move in legalMoves]
+                self.respond(f"{' '.join(sorted(strLegalMoves))} {probability * remainingMoves}")
+        else:
+            self.respond("error fix")
+
+    def policy_cmd(self, args):
+        self.go_engine.policy = args[0]
+        self.respond()
+        
+    def selection_cmd(self, args):
+        self.go_engine.selection = args[0]
+        self.respond()
+
 
     def write(self, data):
         stdout.write(data)
