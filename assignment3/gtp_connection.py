@@ -88,18 +88,20 @@ class GtpConnection:
             total = 0
             moves_probability = {}
             probability = []
+            move_list = []
             for move in legalMoves:
                 move_value = self.moveWeight(move)
                 weights = self.getWeights('weights')
                 val_move = weights[move_value]
                 x, y = point_to_coord(move, self.board.size)
-                strLegalMoves = [].append(format_point((x,y)).lower())
+                move_string = format_point((x, y)).lower()
+                move_list.append(move_string)
                 moves_probability[x,y] = val_move
                 total += val_move
-            strLegalMoves = sorted(strLegalMoves)
-            for i in strLegalMoves:
+            move_list = sorted(move_list)
+            for i in move_list:
                 probability.append(round(moves_probability[i]/total,3)) 
-            self.respond(f"{' '.join(sorted(strLegalMoves))} {probability}")
+            self.respond(f"{' '.join(sorted(move_list))} {probability}")
 
     def getWeights(self, file):
         weights = {}

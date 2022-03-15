@@ -23,7 +23,7 @@ span.test { font-weight:bold; }
 </td></tr>
 </table>
 <table width="100%" bgcolor="#e0e0e0">
-<tr><th align="left">Date:</th><td>March 14, 2022 5:58:54 PM MDT</td></tr>
+<tr><th align="left">Date:</th><td>March 14, 2022 6:08:28 PM MDT</td></tr>
 <tr><th align="left">Host:</th><td>DESKTOP-C74IC56</td></tr>
 <tr><th align="left" valign="top">Command:</th>
 <td valign="top"><tt>python NoGo.py</tt></td></tr>
@@ -194,12 +194,12 @@ cputime
     run()
   File "F:\Code\GitHub\cmput-455\assignment3\NoGo.py", line 133, in run
     con.start_connection()
-  File "F:\Code\GitHub\cmput-455\assignment3\gtp_connection.py", line 147, in start_connection
+  File "F:\Code\GitHub\cmput-455\assignment3\gtp_connection.py", line 149, in start_connection
     self.get_cmd(line)
-  File "F:\Code\GitHub\cmput-455\assignment3\gtp_connection.py", line 175, in get_cmd
+  File "F:\Code\GitHub\cmput-455\assignment3\gtp_connection.py", line 177, in get_cmd
     raise e
-  File "F:\Code\GitHub\cmput-455\assignment3\gtp_connection.py", line 171, in get_cmd
+  File "F:\Code\GitHub\cmput-455\assignment3\gtp_connection.py", line 173, in get_cmd
     self.commands[command_name](args)
-  File "F:\Code\GitHub\cmput-455\assignment3\gtp_connection.py", line 96, in policy_moves_cmd
-    strLegalMoves = [].append(format_point(x,y).lower())
-TypeError: format_point() takes 1 positional argument but 2 were given
+  File "F:\Code\GitHub\cmput-455\assignment3\gtp_connection.py", line 103, in policy_moves_cmd
+    probability.append(round(moves_probability[i]/total,3)) 
+KeyError: 'd1'
