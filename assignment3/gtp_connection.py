@@ -92,8 +92,8 @@ class GtpConnection:
                 move_value = self.moveWeight(move)
                 weights = self.getWeights('weights')
                 val_move = weights[move_value]
-                x,y = format_point(point_to_coord(move, self.board.size)).lower()
-                strLegalMoves = [].append(x,y)
+                x, y = point_to_coord(move, self.board.size)
+                strLegalMoves = [].append(format_point((x,y)).lower())
                 moves_probability[x,y] = val_move
                 total += val_move
             strLegalMoves = sorted(strLegalMoves)
@@ -106,12 +106,12 @@ class GtpConnection:
         weights_file = open( file +'.txt','r')
         for line in weights_file:
             key_value = line.split(' ')
-            weights[int(key_value)] = float(key_value)
+            weights[int(key_value[0])] = float(key_value[1])
         weights_file.close()
         return weights
 
     def moveWeight(self,move):
-        neighbours = [move + self.NS - 1, move + self.NS,move + self.NS + 1,move - 1,move + 1,  move - self.NS - 1,move - self.NS,move - self.NS + 1]
+        neighbours = [move + self.board.NS - 1, move + self.board.NS,move + self.board.NS + 1,move - 1,move + 1,  move - self.board.NS - 1,move - self.board.NS,move - self.board.NS + 1]
         total = 0
         for i in range(len(neighbours)):
             if self.board.get_color(neighbours[i]) == BLACK:

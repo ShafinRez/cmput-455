@@ -23,7 +23,7 @@ span.test { font-weight:bold; }
 </td></tr>
 </table>
 <table width="100%" bgcolor="#e0e0e0">
-<tr><th align="left">Date:</th><td>March 14, 2022 5:53:24 PM MDT</td></tr>
+<tr><th align="left">Date:</th><td>March 14, 2022 5:58:54 PM MDT</td></tr>
 <tr><th align="left">Host:</th><td>DESKTOP-C74IC56</td></tr>
 <tr><th align="left" valign="top">Command:</th>
 <td valign="top"><tt>python NoGo.py</tt></td></tr>
@@ -200,8 +200,6 @@ cputime
     raise e
   File "F:\Code\GitHub\cmput-455\assignment3\gtp_connection.py", line 171, in get_cmd
     self.commands[command_name](args)
-  File "F:\Code\GitHub\cmput-455\assignment3\gtp_connection.py", line 92, in policy_moves_cmd
-    move_value = self.moveWeight(move)
-  File "F:\Code\GitHub\cmput-455\assignment3\gtp_connection.py", line 114, in moveWeight
-    neighbours = [move + self.NS - 1, move + self.NS,move + self.NS + 1,move - 1,move + 1,  move - self.NS - 1,move - self.NS,move - self.NS + 1]
-AttributeError: 'GtpConnection' object has no attribute 'NS'
+  File "F:\Code\GitHub\cmput-455\assignment3\gtp_connection.py", line 96, in policy_moves_cmd
+    strLegalMoves = [].append(format_point(x,y).lower())
+TypeError: format_point() takes 1 positional argument but 2 were given
