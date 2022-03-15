@@ -47,10 +47,3 @@ def winner(board):
         return opp
     else:
         return None
-    # score = score_board(board)
-    # if score > 0:
-    #     return BLACK
-    # elif score < 0:
-    #     return WHITE
-    # else:
-    #     return None

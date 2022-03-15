@@ -329,7 +329,6 @@ class GtpConnection:
         """
         play a move args[1] for given color args[0] in {'b','w'}
         """
-        # change this method to use your solver
         try:
             board_color = args[0].lower()    
             board_move = args[1]
@@ -359,7 +358,6 @@ class GtpConnection:
 
     def genmove_cmd(self, args):
         """ generate a move for color args[0] in {'b','w'} """
-        # change this method to use your solver
         board_color = args[0].lower()
         color = color_to_int(board_color)
         move = self.go_engine.get_move(self.board, color)
