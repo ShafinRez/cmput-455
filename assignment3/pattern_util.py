@@ -104,6 +104,11 @@ class PatternUtil(object):
         assert move != None
         return not board.is_legal(move, color) or board.is_eye(move, color)
 
+    # returns True if move should be filtered
+    @staticmethod
+    def legal_filter(board, move, color):
+        return not board.is_legal(move, color)
+
     # return True if move should be filtered
     @staticmethod
     def selfatari_filter(board, move, color):
@@ -117,7 +122,8 @@ class PatternUtil(object):
         if check_selfatari:
             return PatternUtil.selfatari_filter(board, move, color)
         else:
-            return PatternUtil.filleye_filter(board, move, color)
+            # return PatternUtil.filleye_filter(board, move, color)
+            return PatternUtil 
 
     @staticmethod
     def selfatari(board, move, color):
@@ -175,9 +181,8 @@ class PatternUtil(object):
         move = None
         if use_pattern:
             moves = PatternUtil.generate_pattern_moves(board)
-            move = PatternUtil.filter_moves_and_generate(board, moves)
-        if move == None:
-            move = GoBoardUtil.generate_random_move(board, board.current_player, True)
+            move = PatternUtil.legal_filter
+        legal_filter
         return move
 
     @staticmethod

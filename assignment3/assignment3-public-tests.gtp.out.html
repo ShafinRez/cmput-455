@@ -23,7 +23,7 @@ span.test { font-weight:bold; }
 </td></tr>
 </table>
 <table width="100%" bgcolor="#e0e0e0">
-<tr><th align="left">Date:</th><td>March 14, 2022 6:08:28 PM MDT</td></tr>
+<tr><th align="left">Date:</th><td>March 14, 2022 10:11:52 PM MDT</td></tr>
 <tr><th align="left">Host:</th><td>DESKTOP-C74IC56</td></tr>
 <tr><th align="left" valign="top">Command:</th>
 <td valign="top"><tt>python NoGo.py</tt></td></tr>
@@ -189,17 +189,219 @@ cputime
 </span>= 
 
 <span class="test"><a name="20">20 policy_moves
+</a>#? [d1 d6 f3 f7 0.417 0.102 0.218 0.264]
+= d1 d6 f3 f7 0.417 0.102 0.218 0.264
+
+</span>
+<span class="comment"># Test to see genmove works with rr selection
+</span><span class="command">play w f3
+</span>= 
+
+<span class="command">play b c5
+</span>= 
+
+<span class="command">play w d1
+</span>= 
+
+<span class="command">play b d2
+</span>= 
+
+<span class="comment">#   A B C D E F G
+# 7 X O X O O . O 7
+# 6 . O X . O X O 6
+# 5 O X X O X . X 5
+# 4 X O X O O O O 4
+# 3 X . X X O O O 3
+# 2 X X X X X O . 2
+# 1 X X X O O O X 1
+#   A B C D E F G
+# White to play
+</span>
+<span class="command">policy random
+</span>= 
+
+<span class="test"><a name="30">30 genmove w
+</a>#? [f7]
+</span><span class="fail">= D6
+
+</span>
+<span class="command">clear_board
+</span>= 
+
+<span class="command">play b e6
+</span>= 
+
+<span class="command">play w a5
+</span>= 
+
+<span class="command">play b d7
+</span>= 
+
+<span class="command">play w g5
+</span>= 
+
+<span class="command">play b f3
+</span>= 
+
+<span class="command">play w b1
+</span>= 
+
+<span class="command">play b b5
+</span>= 
+
+<span class="command">play w e7
+</span>= 
+
+<span class="command">play b g6
+</span>= 
+
+<span class="command">play w a6
+</span>= 
+
+<span class="command">play b a3
+</span>= 
+
+<span class="command">play w b2
+</span>= 
+
+<span class="command">play b f4
+</span>= 
+
+<span class="command">play w a2
+</span>= 
+
+<span class="command">play b g2
+</span>= 
+
+<span class="command">play w c5
+</span>= 
+
+<span class="command">play b d5
+</span>= 
+
+<span class="command">play w c6
+</span>= 
+
+<span class="command">play b b7
+</span>= 
+
+<span class="command">play w f2
+</span>= 
+
+<span class="command">play b d6
+</span>= 
+
+<span class="command">play w g1
+</span>= 
+
+<span class="command">play b d2
+</span>= 
+
+<span class="command">play w f1
+</span>= 
+
+<span class="command">play b a4
+</span>= 
+
+<span class="command">play w d4
+</span>= 
+
+<span class="command">play b b4
+</span>= 
+
+<span class="command">play w e5
+</span>= 
+
+<span class="command">play b a7
+</span>= 
+
+<span class="command">play w e1
+</span>= 
+
+<span class="command">play b c1
+</span>= 
+
+<span class="command">play w c2
+</span>= 
+
+<span class="command">play b f6
+</span>= 
+
+<span class="command">play w a1
+</span>= 
+
+<span class="command">play b g4
+</span>= 
+
+<span class="command">play w b6
+</span>= 
+
+<span class="command">play b c3
+</span>= 
+
+<span class="command">play w f5
+</span>= 
+
+<span class="command">play b d3
+</span>= 
+
+<span class="command">play w e4
+</span>= 
+
+<span class="comment">#   A B C D E F G
+# 7 X X . X O . . 7
+# 6 O O O X X X X 6
+# 5 O X O X O O O 5
+# 4 X X . O O X X 4
+# 3 X . X X . X . 3
+# 2 O O O X . O X 2
+# 1 O O X . O O O 1
+#   A B C D E F G
+#Black to play
+</span>
+
+<span class="command">policy random
+</span>= 
+
+<span class="test"><a name="40">40 policy_moves
+</a>#? [c4 c7 d1 e2 e3 g3 g7 0.143 0.143 0.143 0.143 0.143 0.143 0.143]
+= c4 c7 d1 e2 e3 g3 g7 0.143 0.143 0.143 0.143 0.143 0.143 0.143 
+
+</span>
+<span class="command">policy pattern
+</span>= 
+
+<span class="test"><a name="50">50 policy_moves
+</a>#? [c4 c7 d1 e2 e3 g3 g7 0.079 0.155 0.047 0.341 0.158 0.092 0.128]
+= c4 c7 d1 e2 e3 g3 g7 0.079 0.155 0.047 0.341 0.158 0.092 0.128
+
+</span>
+<span class="command">play b g7
+</span>= 
+
+<span class="command">selection ucb
+</span>= 
+
+<span class="test"><a name="60">60 genmove w
 </a></span><span class="stderr">Traceback (most recent call last):
-  File "F:\Code\GitHub\cmput-455\assignment3\NoGo.py", line 137, in &lt;module&gt;
+  File "F:\Code\GitHub\cmput-455\assignment3\NoGo.py", line 135, in &lt;module&gt;
     run()
-  File "F:\Code\GitHub\cmput-455\assignment3\NoGo.py", line 133, in run
+  File "F:\Code\GitHub\cmput-455\assignment3\NoGo.py", line 131, in run
     con.start_connection()
-  File "F:\Code\GitHub\cmput-455\assignment3\gtp_connection.py", line 149, in start_connection
+  File "F:\Code\GitHub\cmput-455\assignment3\gtp_connection.py", line 148, in start_connection
     self.get_cmd(line)
-  File "F:\Code\GitHub\cmput-455\assignment3\gtp_connection.py", line 177, in get_cmd
+  File "F:\Code\GitHub\cmput-455\assignment3\gtp_connection.py", line 176, in get_cmd
     raise e
-  File "F:\Code\GitHub\cmput-455\assignment3\gtp_connection.py", line 173, in get_cmd
+  File "F:\Code\GitHub\cmput-455\assignment3\gtp_connection.py", line 172, in get_cmd
     self.commands[command_name](args)
-  File "F:\Code\GitHub\cmput-455\assignment3\gtp_connection.py", line 103, in policy_moves_cmd
-    probability.append(round(moves_probability[i]/total,3)) 
-KeyError: 'd1'
+  File "F:\Code\GitHub\cmput-455\assignment3\gtp_connection.py", line 365, in genmove_cmd
+    move = self.go_engine.get_move(self.board, color)
+  File "F:\Code\GitHub\cmput-455\assignment3\NoGo.py", line 70, in get_move
+    best = runUcb(self, cboard, C, moves, color)
+  File "F:\Code\GitHub\cmput-455\assignment3\ucb.py", line 80, in runUcb
+    result = player.simulate(board, moves[moveIndex], toplay)
+  File "F:\Code\GitHub\cmput-455\assignment3\NoGo.py", line 42, in simulate
+    return self.playGame(cboard, opp)
+  File "F:\Code\GitHub\cmput-455\assignment3\NoGo.py", line 91, in playGame
+    board, self.use_pattern, False
+AttributeError: 'Go0' object has no attribute 'use_pattern'

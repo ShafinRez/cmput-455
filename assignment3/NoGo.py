@@ -87,12 +87,10 @@ class Go0:
             if self.policy == "random":
                 move = GoBoardUtil.generate_random_move(board, color, False)
             else:
-                # move = PatternUtil.generate_move_with_filter(
-                #     board, self.use_pattern, check_selfatari
-                # )
-                move = PatternUtil.generate_move_without_filter(
-                    board, self.selection
+                move = PatternUtil.generate_move_with_filter(
+                    board, self.use_pattern, False
                 )
+
             board.play_move(move, color)
             if move == PASS:
                 nuPasses += 1

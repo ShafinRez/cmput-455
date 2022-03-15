@@ -78,7 +78,7 @@ class GtpConnection:
             if remainingMoves == 0:
                 self.response()
             else: 
-                probability = str(1 / remainingMoves) + " "
+                probability = str(round(1 / remainingMoves, 3)) + " "
                 strLegalMoves = [(format_point(point_to_coord(move, self.board.size))).lower() for move in legalMoves]
                 self.respond(f"{' '.join(sorted(strLegalMoves))} {probability * remainingMoves}")
         
@@ -98,7 +98,7 @@ class GtpConnection:
                 total += val_move
             move_list = sorted(move_list)
             for i in move_list:
-                probability.append(str(round(moves_probability[i]/total,3)))
+                probability.append(str(round(moves_probability[i]/total, 3)))
                 result = ' '.join(move_list+probability)
             self.respond(result)
 

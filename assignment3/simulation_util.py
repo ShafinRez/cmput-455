@@ -41,7 +41,7 @@ def select_best_move(board, moves, moveWins):
         # stdout.write("= {}\n\n".format(moveWins))
         # stdout.flush()
         # return np.random.choice(moves)
-    stdout.write("= {}\n\n".format(moveWins))
-    stdout.flush()
+    # stdout.write("= {}\n\n".format(moveWins))
+    # stdout.flush()
     max_child = np.argmax(moveWins)
     return moves[max_child]
