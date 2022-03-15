@@ -1,7 +1,6 @@
 """
 gtp_connection.py
 Module for playing games of Go using GoTextProtocol
-
 Parts of this code were originally based on the gtp module 
 in the Deep-Go project by Isaac Henrion and Amos Storkey 
 at the University of Edinburgh.
@@ -26,7 +25,6 @@ class GtpConnection:
     def __init__(self, go_engine, board, debug_mode=False):
         """
         Manage a GTP connection for a Go-playing engine
-
         Parameters
         ----------
         go_engine:
@@ -96,12 +94,13 @@ class GtpConnection:
                 x, y = point_to_coord(move, self.board.size)
                 move_string = format_point((x, y)).lower()
                 move_list.append(move_string)
-                moves_probability[x,y] = val_move
+                moves_probability[move_string] = val_move
                 total += val_move
             move_list = sorted(move_list)
             for i in move_list:
-                probability.append(round(moves_probability[i]/total,3)) 
-            self.respond(f"{' '.join(sorted(move_list))} {probability}")
+                probability.append(str(round(moves_probability[i]/total,3)))
+                result = ' '.join(move_list+probability)
+            self.respond(result)
 
     def getWeights(self, file):
         weights = {}
