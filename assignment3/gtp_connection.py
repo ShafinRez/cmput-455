@@ -1,7 +1,6 @@
 """
 gtp_connection.py
 Module for playing games of Go using GoTextProtocol
-
 Parts of this code were originally based on the gtp module 
 in the Deep-Go project by Isaac Henrion and Amos Storkey 
 at the University of Edinburgh.
@@ -26,7 +25,6 @@ class GtpConnection:
     def __init__(self, go_engine, board, debug_mode=False):
         """
         Manage a GTP connection for a Go-playing engine
-
         Parameters
         ----------
         go_engine:
@@ -52,7 +50,10 @@ class GtpConnection:
             "play": self.play_cmd,
             "gogui-rules_legal_moves":self.gogui_rules_legal_moves_cmd,
             "gogui-rules_final_result":self.gogui_rules_final_result_cmd,
-            "solve":self.solve_cmd
+            "solve":self.solve_cmd,
+            "policy": self.policy_cmd,
+            "selection": self.selection_cmd,
+            "policy_moves": self.policy_moves_cmd,
         }
 
         # used for argument checking
@@ -65,7 +66,71 @@ class GtpConnection:
             "genmove": (1, "Usage: genmove {w,b}"),
             "play": (2, "Usage: play {b,w} MOVE"),
             "legal_moves": (1, "Usage: legal_moves {w,b}"),
+            "policy": (1, "Usage: policy {random, pattern}"),
+            "selection": (1, "Usage: selection {rr, ucb}"),
         }
+
+    def policy_moves_cmd(self, args):
+        currentPlayer = self.board.current_player
+        legalMoves = self.go_engine.getLegalMoves(self.board, currentPlayer)
+        if self.go_engine.policy == "random":
+            remainingMoves = len(legalMoves)
+            if remainingMoves == 0:
+                self.response()
+            else: 
+                probability = str(1 / remainingMoves) + " "
+                strLegalMoves = [(format_point(point_to_coord(move, self.board.size))).lower() for move in legalMoves]
+                self.respond(f"{' '.join(sorted(strLegalMoves))} {probability * remainingMoves}")
+        
+        else:
+            total = 0
+            moves_probability = {}
+            probability = []
+            move_list = []
+            for move in legalMoves:
+                move_value = self.moveWeight(move)
+                weights = self.getWeights('weights')
+                val_move = weights[move_value]
+                x, y = point_to_coord(move, self.board.size)
+                move_string = format_point((x, y)).lower()
+                move_list.append(move_string)
+                moves_probability[move_string] = val_move
+                total += val_move
+            move_list = sorted(move_list)
+            for i in move_list:
+                probability.append(str(round(moves_probability[i]/total,3)))
+                result = ' '.join(move_list+probability)
+            self.respond(result)
+
+    def getWeights(self, file):
+        weights = {}
+        weights_file = open( file +'.txt','r')
+        for line in weights_file:
+            key_value = line.split(' ')
+            weights[int(key_value[0])] = float(key_value[1])
+        weights_file.close()
+        return weights
+
+    def moveWeight(self,move):
+        neighbours = [move + self.board.NS - 1, move + self.board.NS,move + self.board.NS + 1,move - 1,move + 1,  move - self.board.NS - 1,move - self.board.NS,move - self.board.NS + 1]
+        total = 0
+        for i in range(len(neighbours)):
+            if self.board.get_color(neighbours[i]) == BLACK:
+                total += BLACK * (4 ** i)
+            elif self.board.get_color(neighbours[i]) == WHITE:
+                total += WHITE * (4 ** i)
+            elif self.board.get_color(neighbours[i]) == BORDER:
+                total += BORDER * (4 ** i)
+        return total
+
+    def policy_cmd(self, args):
+        self.go_engine.policy = args[0]
+        self.respond()
+        
+    def selection_cmd(self, args):
+        self.go_engine.selection = args[0]
+        self.respond()
+
 
     def write(self, data):
         stdout.write(data)
